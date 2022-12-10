@@ -46,7 +46,7 @@ module.exports = {
       title: 'CatGPT3',
     }),
   ].concat(PROD ? [
-    new MiniCssExtractPlugin({filename: 'kindle.[hash].css'})
+    new MiniCssExtractPlugin({filename: 'kindle.[fullhash].css'})
   ] : []),
   output: {
     filename: PROD ? 'kindle.[chunkhash].js' : 'kindle.js',
