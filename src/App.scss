@@ -1,4 +1,245 @@
+:root {
+  --color-primary: #19c37d;
+  --color-secondary: #715fde;
+  --color-error: #ef4146;
+  --gradient-primary: linear-gradient(90deg, #a29bd4, #989fdd);
+  --text-primary: #202123;
+  --text-default: #353740;
+  --text-secondary: #6e6e80;
+  --text-disabled: #acacbe;
+  --text-error: var(--color-error);
+}
+
+html {
+  font-family: Söhne, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+    Ubuntu, Cantarell, Noto Sans, sans-serif, Helvetica Neue, Arial,
+    Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+
+  color-scheme: light;
+  .dark {
+    color-scheme: dark;
+  }
+}
+
+html,
+* {
+  box-sizing: border-box;
+}
+
 body {
-  background-color: black;
+  color: rgb(52, 53, 65);
+  margin: 0;
+  padding: 0;
+}
+
+.App {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+}
+
+.Chat {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+}
+
+.ChatWindow {
+  height: 100vh;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+
+  &.-empty {
+    justify-content: center;
+  }
+
+  .Spacer {
+    min-height: 100px;
+  }
+}
+
+.ChatFooter {
+  background-image: linear-gradient(
+    rgba(255, 255, 255, 0) 13.94%,
+    rgb(255, 255, 255) 54.73%
+  );
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  padding: 0 1rem;
+  footer {
+    text-align: center;
+    padding-top: 1rem;
+    padding-bottom: 1.5rem;
+    font-size: 0.75rem;
+    color: rgba(0, 0, 0, 0.5);
+  }
+}
+
+.ChatInput {
+  width: 100%;
+  background-color: white;
+  line-height: 3;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+    rgba(0, 0, 0, 0.1) 0px 0px 10px 0px;
+
+  input[type='text'] {
+    border-radius: 5px;
+    padding: 0 1rem;
+    line-height: inherit;
+    font-size: 1.1rem;
+    outline: 0;
+    width: calc(100% - 2rem);
+    border: 0;
+  }
+
+  .send {
+    cursor: pointer;
+    border-radius: 5px;
+    transition: color 0.1s ease-in;
+    &:hover {
+      color: #999;
+    }
+  }
+
+  input[type='submit'] {
+    display: none;
+  }
+}
+
+.Message {
+  width: 100%;
+  padding: 1.5rem 3rem;
+  display: flex;
+  gap: 2rem;
+
+  .icon {
+    width: 2rem;
+    height: 2rem;
+    flex-basis: 2rem;
+    flex-grow: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+
+    &.-cat {
+      background-color: #10a37f;
+    }
+
+    &.-user {
+      background-color: #2980b9;
+    }
+  }
+
+  &.-cat {
+    background-color: rgb(247, 247, 248);
+    border-top: 1px solid rgb(217, 217, 227);
+    border-bottom: 1px solid rgb(217, 217, 227);
+  }
+}
+
+.Sidebar {
   color: white;
+  min-width: 200px;
+  max-width: 200px;
+  background-color: hsl(220, 4.5%, 13.1%);
+  ul {
+    list-style: none;
+    padding: 0 0.5rem;
+
+    li {
+      border-radius: 5px;
+      width: 100%;
+      padding: 1rem;
+      cursor: pointer;
+      transition: background-color 0.1s ease-in;
+      &:hover {
+        --tw-bg-opacity: 1;
+        background-color: rgba(52, 53, 65, var(--tw-bg-opacity));
+      }
+      a {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        svg {
+          flex-basis: 1rem;
+          flex-grow: 0;
+        }
+      }
+    }
+  }
+}
+
+.Welcome {
+  margin: 0 1rem;
+  align-items: center;
+  h1 {
+    font-size: 36px;
+    font-weight: 600;
+    text-align: center;
+    line-height: 4;
+  }
+}
+
+.Grid {
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+}
+
+.Col {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 250px;
+  max-width: 250px;
+  min-width: 40px;
+
+  h2 {
+    text-align: center;
+    font-weight: normal;
+    font-size: 18px;
+  }
+
+  div {
+    --tw-bg-opacity: 1;
+    background-color: rgba(247, 247, 248, var(--tw-bg-opacity));
+    padding: 1rem;
+    margin: 0.25rem;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 14px;
+  }
+  div.icon {
+    background-color: transparent;
+    font-size: 1.1rem;
+    padding: 0;
+  }
+}
+
+@media (max-width: 760px) {
+  .Sidebar {
+    min-width: 50px;
+    max-width: 50px;
+    ul {
+      li {
+        height: 2rem;
+        width: 2rem;
+        padding: 0;
+        .label {
+          display: none;
+        }
+        a {
+          justify-content: center;
+        }
+      }
+    }
+  }
 }
