@@ -23,7 +23,7 @@ export const Message = ({msg}: {msg: M}) => (
     <div className="content">
       <p>{msg.content}</p>
       {msg.attachments?.map((url) => (
-        <div key={url}>
+        <div className="attachment" key={url}>
           <iframe src={url} frameBorder="0" />
         </div>
       ))}

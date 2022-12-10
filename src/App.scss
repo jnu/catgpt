@@ -1,15 +1,3 @@
-:root {
-  --color-primary: #19c37d;
-  --color-secondary: #715fde;
-  --color-error: #ef4146;
-  --gradient-primary: linear-gradient(90deg, #a29bd4, #989fdd);
-  --text-primary: #202123;
-  --text-default: #353740;
-  --text-secondary: #6e6e80;
-  --text-disabled: #acacbe;
-  --text-error: var(--color-error);
-}
-
 html {
   font-family: Söhne, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
     Ubuntu, Cantarell, Noto Sans, sans-serif, Helvetica Neue, Arial,
@@ -36,12 +24,19 @@ body {
   display: flex;
   width: 100%;
   height: 100vh;
+  overflow: hidden;
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 
 .Chat {
-  flex-grow: 1;
   display: flex;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0;
   flex-direction: column;
+  overflow: auto;
   height: 100%;
   position: relative;
 }
@@ -58,7 +53,7 @@ body {
   }
 
   .Spacer {
-    min-height: 100px;
+    min-height: 150px;
   }
 }
 
@@ -137,6 +132,16 @@ body {
     }
   }
 
+  .content {
+    flex-basis: 0;
+    flex-grow: 1;
+    flex-shrink: 1;
+    overflow: hidden;
+    .attachment {
+      float: right;
+    }
+  }
+
   &.-cat {
     background-color: rgb(247, 247, 248);
     border-top: 1px solid rgb(217, 217, 227);
@@ -146,8 +151,8 @@ body {
 
 .Sidebar {
   color: white;
-  min-width: 200px;
-  max-width: 200px;
+  flex-basis: 200px;
+  flex-grow: 0;
   background-color: hsl(220, 4.5%, 13.1%);
   ul {
     list-style: none;
@@ -211,23 +216,27 @@ body {
   div {
     --tw-bg-opacity: 1;
     background-color: rgba(247, 247, 248, var(--tw-bg-opacity));
-    padding: 1rem;
+    padding: 0.75rem;
     margin: 0.25rem;
     border-radius: 5px;
     text-align: center;
-    font-size: 14px;
+    font-size: 0.875rem;
+    overflow: hidden;
   }
   div.icon {
     background-color: transparent;
     font-size: 1.1rem;
     padding: 0;
+    color: #2980b9;
   }
 }
 
 @media (max-width: 760px) {
+  .Message {
+    padding: 0.5rem;
+  }
   .Sidebar {
-    min-width: 50px;
-    max-width: 50px;
+    flex-basis: 50px;
     ul {
       li {
         height: 2rem;

@@ -58,7 +58,7 @@ const lexicon = [
  * Get a cat sound.
  */
 const getVocalization = () => {
-  const idx = Math.round(Math.random() * lexicon.length - 1);
+  const idx = Math.round(Math.random() * (lexicon.length - 1));
   return lexicon[idx];
 };
 
