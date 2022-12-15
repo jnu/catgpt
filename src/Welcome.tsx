@@ -37,8 +37,8 @@ export const Welcome = () => (
       </Col>
 
       <Col title="Capabilities" icon={<BsLightningCharge size={25} />}>
-        <div>Doesn't remember anything that was said in any conversation</div>
         <div>Is cute</div>
+        <div>Passes the Purring test</div>
         <div>
           Trained to decline both appropriate and inappropriate requests
         </div>
