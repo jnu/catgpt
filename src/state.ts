@@ -6,10 +6,11 @@ export type Message = Readonly<{
   content: string;
   ts: number;
   attachments?: string[];
-}>;
+}> & {loading?: boolean};
 
 export const state = new Store({
   thread: [] as Message[],
+  thinking: false,
 });
 
 let _ctr = 0;

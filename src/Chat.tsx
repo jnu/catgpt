@@ -8,12 +8,38 @@ import {Welcome} from './Welcome';
 import {state, newUserMsg, newCatMsg} from './state';
 import type {Message as M} from './state';
 
+
+/**
+ * Scroll to the bottom of the window when the message loads.
+ */
+const doScroll = () => {
+  const el = document.querySelector('.ChatWindow');
+  if (!el) {
+    return;
+  }
+
+  el.scrollTo({
+    top: el.scrollHeight,
+    behavior: 'smooth',
+  });
+};
+
+
 /**
  * UI for an individual message.
  */
-export const Message = ({msg}: {msg: M}) => (
+export const Message = ({msg}: {msg: M}) => {
+  const [imgLoading, setImgLoading] = useState(msg.attachments?.length || 0);
+  const doLoad = () => {
+    setImgLoading(imgLoading - 1);
+    doScroll();
+  }
+
+  return (
+
+
   <div className={`Message -${msg.who}`}>
-    <div className={`icon -${msg.who}`}>
+    <div className={`icon -${msg.who} -${msg.loading || imgLoading > 0 ? 'loading' : 'ready'}`}>
       {msg.who === 'cat' ? (
         <GiHollowCat size={25} color="white" />
       ) : (
@@ -24,22 +50,30 @@ export const Message = ({msg}: {msg: M}) => (
       <p>{msg.content}</p>
       {msg.attachments?.map((url) => (
         <div className="attachment" key={url}>
-          <iframe src={url} frameBorder="0" />
+          <img src={url} onLoad={doLoad} />
         </div>
       ))}
     </div>
   </div>
 );
+}
 
 /**
  * UI for chat thread.
  */
 export const ChatThread = () => {
   const [thread] = state.use('thread');
+  const [thinking] = state.use('thinking');
+
+  const rThread = [...thread];
+  if (thinking) {
+    const tmp = newCatMsg('');
+    tmp.loading = true;
+  }
 
   return (
     <>
-      {thread.map((t) => (
+      {rThread.map((t) => (
         <Message key={t.id} msg={t} />
       ))}
     </>
@@ -51,8 +85,8 @@ export const ChatThread = () => {
  */
 export const ChatInput = () => {
   const [thread, setThread] = state.use('thread');
+  const [_, setThinking] = state.use('thinking');
   const [msg, setMsg] = useState('');
-  const [_, setThinking] = useState(false);
 
   const sendMsg = (m: string) => {
     if (!m) {
@@ -66,7 +100,7 @@ export const ChatInput = () => {
     cat.replyTo(m).then((node) => {
       setThread([
         ...state.getValue('thread'),
-        newCatMsg(node.content, node.gif),
+        newCatMsg(node.content, node.url),
       ]);
       setThinking(false);
     });

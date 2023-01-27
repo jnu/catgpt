@@ -130,6 +130,13 @@ body {
     &.-user {
       background-color: #2980b9;
     }
+
+    &.-loading {
+      animation-name: loading;
+      animation-duration: 1000ms;
+      animation-iteration-count: infinite;
+      animation-timing-function: linear; 
+    }
   }
 
   .content {
@@ -139,6 +146,10 @@ body {
     overflow: hidden;
     .attachment {
       float: left;
+      img {
+        max-width: 100%;
+        border-radius: 5px;
+      }
     }
   }
 
@@ -250,5 +261,17 @@ body {
         }
       }
     }
+  }
+}
+
+@keyframes loading {
+  0% {
+    opacity: 1.0;
+  }
+  50% {
+    opacity: 0.25;
+  }
+  100% {
+    opacity: 1.0;
   }
 }

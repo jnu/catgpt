@@ -1,43 +1,33 @@
 /**
- * My Giphy API key.
+ * My Cat API key.
  */
-const giphyApiKey = 'ReaVDiiXruBEbPkcqzwx0Ai3XgcDF6A4';
+const apiKey = 'live_wXdRWSmy20KAMn7ktK0A0TUPK9yZTbciawGuF8XEM2v2XwK8TJkcWxuVJB9AYE0Q';
 
 /**
- * Giphy Random API.
+ * Cat API search endpoint.
  */
-const url = 'https://api.giphy.com/v1/gifs/random';
+const url = 'https://api.thecatapi.com/v1/images/search'
 
 /**
- * Partial type of the Giphy Random API response.
+ * Type of the Cat API search response.
  */
-export type GiphyApiResponse = Readonly<{
-  data: {
-    type: string;
-    id: string;
-    url: string;
-    slug: string;
-    embed_url: string;
-    title: string;
-    // some fields omitted
-  };
-  meta: {
-    msg: string;
-    status: number;
-    response_id: string;
-  };
+export type CatApiResponse = Readonly<{
+  id: string;
+  url: string;
+  breeds: string[];
+  categories: string[];
 }>;
 
 /**
- * Pull a cat gif from Giphy.
+ * Pull a cat image from the Cat API.
  */
-const getCatGif = async () => {
-  const fullUrl = `${url}?api_key=${giphyApiKey}&tag=cat&rating=g`;
+const getCat = async () => {
+  const fullUrl = `${url}?api_key=${apiKey}`
 
   const r = await fetch(fullUrl);
-  const json = (await r.json()) as GiphyApiResponse;
+  const json = (await r.json()) as CatApiResponse[]
 
-  return json.data.embed_url;
+  return json[0].url
 };
 
 /**
@@ -46,7 +36,7 @@ const getCatGif = async () => {
 const lexicon = [
   'meow',
   'mew',
-  'mrp',
+  'mrrrroww',
   'mrowwrw',
   'purr',
   'meowwwww',
@@ -65,12 +55,12 @@ const getVocalization = () => {
 /**
  * Get the cat's response to a message.
  *
- * (The cat ignores everything and says whatever it wants.)
+ * (The cat ignores everything and says whatever it wants. Because it is cat.)
  */
 export const replyTo = async (_: string) => {
-  const url = await getCatGif();
+  const url = await getCat();
   return {
     content: getVocalization(),
-    gif: url,
+    url,
   };
 };

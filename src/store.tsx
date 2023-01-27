@@ -1,5 +1,5 @@
 import React from 'react';
-import {useState, useContext, createContext} from 'react';
+import {useState, useEffect, useContext, createContext} from 'react';
 
 /**
  * Props for the store context provider.
@@ -28,6 +28,11 @@ export class Store<T extends Record<string, any>> {
   private state: T;
 
   /**
+   * Temporary state for batching updates.
+   */
+  private pending: Partial<T>;
+
+  /**
    * Update the global state. Not exposed directly.
    */
   private setState: React.Dispatch<React.SetStateAction<T>> | undefined;
@@ -38,11 +43,16 @@ export class Store<T extends Record<string, any>> {
   constructor(defaultState: T) {
     this.ctx = createContext(defaultState);
     this.state = defaultState;
+    this.pending = {};
 
     // Wrap the context provider to integrate with a state hook with which we
     // can update the global state object and re-render.
     this.Context = ({children}: ContextProps) => {
       const [state, setState] = useState(defaultState);
+      useEffect(() => {
+        // Flush pending state.
+        this.pending = {};
+      }, [state]);
       this.setState = setState;
       this.state = state;
       return <this.ctx.Provider value={state}>{children}</this.ctx.Provider>;
@@ -63,8 +73,12 @@ export class Store<T extends Record<string, any>> {
    */
   public use<K extends keyof T>(k: K): [T[K], (v: T[K]) => void] {
     const appState = useContext(this.ctx);
-
     const val = appState[k];
-    return [val, (v) => this.setState!({...appState, [k]: v})];
+    return [val, (v) => {
+      // Record pending value and schedule state update.
+      // This allows multiple calls to `use` in the same update cycle.
+      this.pending[k] = v;
+      return this.setState!({...appState, ...this.pending});
+    }];
   }
 }
